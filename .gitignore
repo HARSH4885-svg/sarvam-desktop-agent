@@ -1,0 +1,43 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Environment Variables
+.env
+*.env.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Browser profile and session data (Google Classroom login data)
+browser_data/
+user_data/
+.playwright/
+
+# Audio scratch recordings
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.wav
+*.mp3
+
+# Logs and IDE
+*.log
+.vscode/
+.idea/
