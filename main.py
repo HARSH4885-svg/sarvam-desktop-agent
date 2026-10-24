@@ -8,6 +8,12 @@ from dotenv import load_dotenv
 from agent import DesktopAgent
 from sarvam_client import SarvamClient
 
+# Force line-buffered stdout for real-time output
+try:
+    sys.stdout.reconfigure(line_buffering=True)
+except Exception:
+    pass
+
 # Load environment configuration
 load_dotenv()
 
