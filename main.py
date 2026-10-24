@@ -62,24 +62,23 @@ def run_smoke_test(agent: DesktopAgent):
     print("\n[SUCCESS] Smoke test completed successfully! Ready for voice interaction.")
     return True
 
-def start_push_to_wake(agent: DesktopAgent, hotkey: str = "ctrl+space"):
-    """Register a global keyboard shortcut to listen for commands."""
-    print(f"[*] Push-to-Wake Hotkey registered: [{hotkey.upper()}]")
-    print("[*] Press the hotkey at any time, speak your command, and release or pause when done.")
-    print("[*] Press Ctrl+C in this console window to quit.\n")
+from hotkey_manager import NativeHotkeyManager
 
+def start_push_to_wake(agent: DesktopAgent, hotkey: str = "ctrl+space"):
+    """Register system-wide global hotkeys using native Windows API."""
     is_processing = False
 
-    def on_hotkey_pressed():
+    def on_hotkey_pressed(hotkey_id: int):
         nonlocal is_processing
         if is_processing:
-            print("\n[Busy] Currently executing previous command...")
+            print("\n[Busy] Currently processing previous command, please wait...")
             return
 
         is_processing = True
+        key_name = "Ctrl+Space" if hotkey_id == 1 else ("Ctrl+Shift+Space" if hotkey_id == 2 else "F8")
         print(f"\n=======================================================")
-        print(f"[*] Push-to-wake triggered! RECORDING AUDIO...")
-        print(f"[*] Speak in English or Hinglish now...")
+        print(f"[*] Push-to-wake triggered via [{key_name}]! RECORDING AUDIO...")
+        print(f"[*] Speak in English or Hinglish now (auto-stops on silence)...")
         print(f"=======================================================")
 
         try:
@@ -93,15 +92,21 @@ def start_push_to_wake(agent: DesktopAgent, hotkey: str = "ctrl+space"):
             print(f"[!] Error during voice processing: {e}")
         finally:
             is_processing = False
-            print(f"\n[*] Listening... Press [{hotkey.upper()}] to give another command.")
+            print(f"\n[*] Listening... Press [Ctrl+Space], [Ctrl+Shift+Space], or [F8] anytime.")
+
+    listener = NativeHotkeyManager(on_hotkey_pressed)
+    listener.start()
+
+    print("[*] Push-to-Wake Listener is active in foreground.")
+    print("[*] Press Ctrl+C in this console window to quit.\n")
 
     try:
-        keyboard.add_hotkey(hotkey, on_hotkey_pressed)
-        keyboard.wait()
+        while True:
+            time.sleep(0.5)
     except KeyboardInterrupt:
         print("\n[*] Exiting Push-to-Wake agent...")
     finally:
-        keyboard.unhook_all()
+        listener.stop()
         agent.cleanup()
 
 def start_interactive_cli(agent: DesktopAgent):
