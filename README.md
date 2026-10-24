@@ -1,75 +1,205 @@
-# Push-to-Wake AI Desktop Agent Powered by Sarvam AI
+# Saarthi AI — Your Voice. Your Computer. Your Agent.
 
-An intelligent, voice-controlled Windows desktop agent powered by Sarvam AI. Activate it with a global hotkey (**Ctrl + Space**), speak naturally in **English, Hindi, or Hinglish**, and watch the agent navigate your browser, automate Google Classroom, control desktop apps, and speak back in real time.
+**A multilingual, voice-controlled AI desktop agent powered by Sarvam AI.**
 
----
+> Speak naturally. Watch your computer take action. Stay in control.
 
-## Key Features
+Saarthi AI transforms natural-language commands into real desktop and browser actions. Activate it with a global hotkey, speak in English, Hindi, or Hinglish, and let the agent interpret your intent, plan a workflow, operate applications, and report the result.
 
-- **Push-to-Wake Global Hotkey**: Press `Ctrl + Space` anywhere on Windows to activate listening.
-- **Full Sarvam AI Stack**:
-  - **Speech-to-Text**: Sarvam **Saaras v4** (`saaras:v4`) for accurate multi-lingual Indian speech recognition.
-  - **Reasoning & Planning**: Sarvam **105B** Chat Completions (`sarvam-105b`) structured JSON tool-call planner.
-  - **Text-to-Speech**: Sarvam **Bulbul** (`bulbul:v4-flash` / `bulbul:v3`) for natural spoken audio responses played directly through Windows speakers.
-- **Browser Automation (Playwright)**:
-  - Persistent Chromium session saved in `./browser_data` (log in once to Google/Classroom and keep your session).
-  - Automated Google Classroom navigation: checks pending assignments, finds specific classes/assignments (e.g., Probability & Statistics), and attaches homework files.
-  - Web search on Google / YouTube, link navigation, button clicking, form filling.
-- **Desktop Automation**:
-  - Launch applications (VS Code, Explorer, Notepad, Calculator).
-  - Search and locate the latest downloaded assignment files or PDFs.
-- **Safety Gate**:
-  - Enforces explicit user confirmation before irreversible actions (such as final submission / "Turn in" on Google Classroom).
+Unlike traditional voice assistants that primarily answer questions, Saarthi is designed to **execute multi-step tasks on your computer**, with visible actions and explicit approval for consequential operations.
+
+Built for the Sarvam AI hackathon.
 
 ---
 
-## Project Structure
+## The Problem
 
-```
-├── agent.py               # Core orchestrator: connects STT -> Planner -> Tools -> TTS
-├── sarvam_client.py       # Sarvam AI API client (STT, LLM chat, TTS, playback)
-├── browser_controller.py  # Playwright browser controller with Classroom workflows
-├── desktop_controller.py  # Windows desktop application & file manager
-├── voice_input.py         # Push-to-wake audio recorder with silence detection
-├── safety.py              # Safety gate requiring confirmation on critical actions
-├── main.py                # Main entrypoint (Push-to-Wake hotkey & CLI modes)
-├── verify_setup.py        # System diagnostic script
-├── requirements.txt       # Python dependencies
-├── .env.example           # Environment template
-└── browser_data/          # Persistent Playwright browser profile directory
-```
+Everyday computer tasks require constant manual interaction: opening applications, finding files, switching browser tabs, navigating portals, and filling out forms.
+
+Traditional voice assistants can answer questions, but completing a real workflow often still requires the user to perform every step.
+
+**What if you could tell your computer what you need instead of explaining how to do it?**
+
+Saarthi bridges the gap between conversational AI and desktop automation.
+
+## What Makes Saarthi Different?
+
+<details>
+<summary><strong>01. Voice-to-Action, Not Just Voice-to-Text</strong></summary>
+
+Press `Ctrl + Space`, speak naturally, and turn your intent into a sequence of desktop and browser actions. The goal is task completion, not another conversational response.
+
+</details>
+
+<details>
+<summary><strong>02. Built Around Sarvam AI</strong></summary>
+
+The system uses Sarvam's speech recognition, language-model reasoning, and speech generation capabilities to create a multilingual voice interaction loop.
+
+- **Saaras:** Speech-to-text.
+- **Sarvam 105B:** Intent understanding and structured task planning.
+- **Bulbul:** Text-to-speech responses.
+
+</details>
+
+<details>
+<summary><strong>03. Real Browser Automation</strong></summary>
+
+Using Playwright, Saarthi can navigate websites, interact with page elements, and automate supported Google Classroom workflows, including locating assignments and preparing file attachments.
+
+A persistent Chromium profile allows users to maintain their own authenticated browser session.
+
+</details>
+
+<details>
+<summary><strong>04. Native Desktop Control</strong></summary>
+
+Open supported Windows applications, access Downloads, and locate relevant files without manually navigating through folders.
+
+</details>
+
+<details>
+<summary><strong>05. Plan → Act → Verify</strong></summary>
+
+Saarthi is designed to go beyond issuing clicks. Important actions should be verified against the resulting application state, helping distinguish successful execution from an attempted action.
+
+</details>
+
+<details>
+<summary><strong>06. Human-in-the-Loop Safety</strong></summary>
+
+Consequential operations, such as final assignment submission, require explicit approval. The user remains in control of actions that can have lasting effects.
+
+</details>
 
 ---
 
-## Windows Setup & Installation
+## Powered by Sarvam AI
 
-### 1. Prerequisites
-- **Windows 10 / 11**
-- **Python 3.10+** (Python 3.11 recommended)
-- Working Microphone & Speakers
+| Component | Role |
+|---|---|
+| Saaras | Recognizes spoken commands |
+| Sarvam 105B | Interprets intent and plans tool-based actions |
+| Bulbul | Converts responses into spoken feedback |
 
-### 2. Environment Setup
-Open PowerShell in the project directory:
+Saarthi combines these capabilities into one workflow:
+
+**Listen → Understand → Plan → Act → Verify → Respond**
+
+The application also uses Python for orchestration, Playwright for browser automation, and controlled Windows utilities for desktop operations.
+
+> Model availability, identifiers, and API configurations depend on the current Sarvam API documentation and account access.
+
+## The Judge Demo: From Voice to Real Action
+
+The recommended demonstration follows one coherent workflow rather than showcasing disconnected features.
+
+### Demo 1 — Control the Desktop
+
+Start Saarthi and press `Ctrl + Space`.
+
+Say:
+
+> "Open my Downloads folder and find my latest PDF."
+
+**What to observe:**
+- Voice input is captured.
+- Saaras transcribes the command.
+- The agent identifies the requested operation.
+- Windows Explorer opens.
+- The relevant file is located and its path is reported.
+- Bulbul speaks the result when TTS is enabled.
+
+### Demo 2 — Automate Google Classroom
+
+Press `Ctrl + Space` again.
+
+Say:
+
+> "Open Google Classroom, find my Probability and Statistics assignment, and prepare it using the correct PDF."
+
+**What to observe:**
+
+1. The persistent browser opens Google Classroom.
+2. The agent checks the login state.
+3. The requested assignment is located.
+4. The relevant local file is identified.
+5. The browser navigates to the assignment.
+6. The file is attached.
+7. The attachment is verified.
+8. The agent pauses before final submission and requests approval.
+
+Approve the final action only when the assignment and attachment are correct. For judging, use a dedicated test assignment whenever possible.
+
+If multiple assignments match, the agent should ask the user to select the correct one rather than guessing.
+
+### Demo 3 — Interactive Text Mode
+
+For a demonstration without microphone input, run:
 
 ```powershell
-# Activate the existing virtual environment (or create one if needed)
+.\venv\Scripts\python.exe main.py --cli
+```
+
+Enter a command in the terminal to exercise the supported agent workflow.
+
+For text-only responses without speech playback:
+
+```powershell
+.\venv\Scripts\python.exe main.py --cli --no-tts
+```
+
+These modes are useful fallbacks if the microphone or audio environment causes problems.
+
+---
+
+## Getting Started on Windows
+
+### Prerequisites
+
+- Windows 10 or Windows 11.
+- Python 3.11 recommended.
+- A working microphone and speakers for voice mode.
+- A valid Sarvam AI API key.
+- Internet access.
+- A Google account with access to the relevant Classroom course for Classroom automation.
+
+### 1. Open the project
+
+Open PowerShell in the repository directory.
+
+Create a virtual environment if one does not already exist:
+
+```powershell
+python -m venv venv
+```
+
+Activate it:
+
+```powershell
 .\venv\Scripts\Activate.ps1
+```
 
-# Install required dependencies
+If PowerShell blocks activation, use the virtual environment's Python executable directly in the following steps.
+
+### 2. Install dependencies
+
+```powershell
+python -m pip install --upgrade pip
 pip install -r requirements.txt
-
-# Install Playwright browser binaries
 playwright install chromium
 ```
 
-### 3. Configure Your Sarvam API Key
-Create a `.env` file in the root folder (or copy from `.env.example`):
+### 3. Configure Sarvam AI
+
+Create your local environment file:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Open `.env` and fill in your Sarvam AI subscription key:
+Open `.env` and configure your API key and preferences:
+
 ```ini
 SARVAM_API_KEY=your_sarvam_api_key_here
 PUSH_TO_WAKE_HOTKEY=ctrl+space
@@ -78,89 +208,131 @@ SARVAM_TTS_SPEAKER=shubh_enhi_ads
 SARVAM_CHAT_MODEL=sarvam-105b
 SARVAM_STT_MODEL=saaras:v4
 ```
-> Obtain your key from: [Sarvam AI Indus Key Management](https://indus.sarvam.ai/key-management)
 
-### 4. Run System Diagnostics
-Verify your microphone, speakers, and dependencies:
+Use only model IDs, language codes, and speaker names supported by your current Sarvam account and API version.
+
+Get your API key from [Sarvam AI Indus — Key Management](https://indus.sarvam.ai/key-management).
+
+**Important:** Never commit your `.env` file or expose your API key in screenshots, logs, or demonstrations.
+
+### 4. Run diagnostics
 
 ```powershell
 .\venv\Scripts\python.exe verify_setup.py
 ```
 
----
+Resolve any reported dependency, API configuration, microphone, or speaker issues before the live demonstration.
 
-## How to Run
+### 5. Launch Saarthi
 
-### Mode 1: Push-to-Wake (Default)
-Runs in the background waiting for the global shortcut:
+**Voice mode — recommended for judging**
 
 ```powershell
 .\venv\Scripts\python.exe main.py
 ```
-- Press **Ctrl + Space** anywhere in Windows.
-- Speak your command (e.g. *"Open Google Classroom and find my pending Probability assignment"*).
-- The agent records, transcribes with Saaras v4, plans the steps with Sarvam 105B, executes them visibly on your PC, and speaks the confirmation with Bulbul TTS!
 
-### Mode 2: Interactive CLI / Demo Mode
-Ideal for testing without pressing hotkeys or in environments without audio:
+Press `Ctrl + Space` and speak your command.
+
+**Interactive CLI**
 
 ```powershell
-# Interactive text prompt (type 'voice' anytime to speak)
 .\venv\Scripts\python.exe main.py --cli
+```
 
-# Test without speech playback (text-only responses)
+**CLI without TTS**
+
+```powershell
 .\venv\Scripts\python.exe main.py --cli --no-tts
 ```
 
-### Mode 3: Smoke Test Mode
-Verifies live API credentials, Playwright browser opening, and desktop controllers:
+**Smoke test**
 
 ```powershell
 .\venv\Scripts\python.exe main.py --test
 ```
 
----
-
-## Implemented Tool Capabilities
-
-| Tool | Category | Description |
-|---|---|---|
-| `open_classroom()` | Browser | Opens Google Classroom and checks login state |
-| `get_pending_classroom_assignments()` | Browser | Scrapes pending assignments from To-Do / Classwork |
-| `prepare_classroom_submission()` | Browser | Finds assignment, attaches specified or latest PDF file |
-| `submit_classroom_assignment()` | Browser (Safety) | Submits/Turns in assignment (**requires confirmation**) |
-| `open_website(url)` | Browser | Navigates to any target URL |
-| `search_web(query)` | Browser | Performs query on Google or YouTube |
-| `find_latest_file(extension)` | Desktop | Locates latest file (e.g., `.pdf`) in Downloads |
-| `open_application(app_name)` | Desktop | Launches Windows software (VS Code, Explorer, Notepad) |
-| `open_downloads_folder()` | Desktop | Opens Downloads folder in Windows Explorer |
+The smoke test should report actual results for the integrations it checks. Live API calls and authenticated Classroom workflows require their respective credentials and sessions.
 
 ---
 
-## 3-Minute Hackathon Demo Script
+## Available Tools
 
-Use this exact script when presenting to hackathon judges:
+| Tool | Purpose |
+|---|---|
+| `open_classroom()` | Opens Google Classroom and checks login state |
+| `get_pending_classroom_assignments()` | Retrieves supported pending-assignment information |
+| `prepare_classroom_submission()` | Locates an assignment and prepares a file attachment |
+| `submit_classroom_assignment()` | Performs final submission after valid approval |
+| `open_website(url)` | Navigates to a validated website |
+| `search_web(query)` | Searches Google or YouTube |
+| `find_latest_file(extension)` | Locates a matching file in Downloads |
+| `open_application(app_name)` | Opens a supported Windows application |
+| `open_downloads_folder()` | Opens the Downloads folder |
 
-### 1. The Hook (30 seconds)
-> *"Hello judges! We all use voice assistants on our phones, but on desktop PCs, assistants still can't do real multi-step work across native applications and web browsers. Today, we built the **Push-to-Wake AI Desktop Agent**, powered completely by **Sarvam AI**'s speech and language models."*
+Tool availability depends on the current implementation and environment. These tools should validate inputs and report errors instead of silently claiming success.
 
-### 2. Live Demo Part 1: Push-to-Wake & Desktop Control (45 seconds)
-1. Run `python main.py` in PowerShell.
-2. Press **Ctrl + Space**.
-3. Speak into microphone:
-   > *"Open my downloads folder and find my latest PDF file."*
-4. **Judge observation**: The agent immediately detects the speech with **Saaras v4**, launches Windows Explorer, identifies the latest downloaded file, and speaks back via **Bulbul TTS**.
+## Project Structure
 
-### 3. Live Demo Part 2: Google Classroom End-to-End Automation (60 seconds)
-1. Press **Ctrl + Space**.
-2. Speak:
-   > *"Open Google Classroom, find my Probability and Statistics assignment, and prepare it for submission."*
-3. **Judge observation**:
-   - The browser opens Google Classroom using the persistent profile.
-   - It navigates to the assignment and clicks "Add or create" -> "File".
-   - It attaches the latest PDF automatically.
-   - The agent halts at the **Safety Gate** and asks: *"Attached your assignment. Would you like me to submit it?"*
-   - Type or speak **Yes** to perform the final turn-in.
+```text
+├── agent.py                # Core agent orchestration
+├── sarvam_client.py        # Sarvam STT, LLM and TTS integration
+├── browser_controller.py   # Playwright and Classroom automation
+├── desktop_controller.py   # Windows applications and file handling
+├── voice_input.py          # Push-to-wake recording and silence detection
+├── safety.py               # Confirmation and safety controls
+├── main.py                 # Application entry point and CLI modes
+├── verify_setup.py         # Setup diagnostics
+├── requirements.txt        # Python dependencies
+├── .env.example            # Environment configuration template
+└── browser_data/           # Persistent browser profile
+```
 
-### 4. Why Sarvam AI (30 seconds)
-> *"Sarvam AI is the powerhouse behind this: Saaras v4 accurately handles Indian accents and mixed Hinglish commands, Sarvam 105B structures complex desktop plans reliably, and Bulbul TTS provides low-latency, natural sounding vocal feedback right on Windows."*
+The `browser_data` directory may contain authenticated session data. Keep it private and never upload it to a public repository.
+
+## Reliability and Safety
+
+Saarthi is designed around controlled execution.
+
+- Only registered tools should be executable by the planner.
+- Application names, file paths, URLs, and tool arguments should be validated.
+- Ambiguous assignment matches should trigger clarification.
+- Consequential operations should require explicit, action-specific approval.
+- Failed operations should be reported honestly.
+- Important actions should be verified using observable application state.
+- Credentials and private session data should not be included in logs or committed to source control.
+
+A click is not proof of success. A successful result should be based on what the application actually shows.
+
+## Troubleshooting
+
+| Problem | What to check |
+|---|---|
+| API authentication failure | Check the API key, account access, and current API requirements |
+| Hotkey not responding | Check the configured shortcut and whether another application intercepts it |
+| Microphone unavailable | Check Windows microphone permissions and the selected input device |
+| No spoken response | Check the TTS configuration, speaker settings, output device, and API response |
+| Chromium fails to launch | Run `playwright install chromium` |
+| Classroom asks for login | Complete login manually in the persistent browser session |
+| Assignment cannot be found | Check course access, assignment naming, and the current Classroom interface |
+| Attachment cannot be verified | Inspect the assignment page and confirm the selected file |
+| Smoke test fails | Read the individual diagnostic results and verify external-service availability |
+
+## Limitations
+
+Saarthi depends on external APIs, network connectivity, supported application interfaces, and user permissions.
+
+- Speech recognition quality can vary with noise, accents, and mixed-language speech.
+- Google Classroom interface changes can affect browser selectors.
+- Authentication and security challenges may require manual intervention.
+- Some desktop actions may be unavailable on particular Windows configurations.
+- End-to-end success depends on the integrations being configured and tested in the actual environment.
+
+The intended feature set should not be confused with verified capabilities. Demonstrate only workflows that have been tested successfully.
+
+## Our Vision
+
+We believe the next generation of desktop interfaces should let people communicate goals rather than manually operate every application.
+
+Saarthi explores that future through multilingual speech, structured planning, real computer interactions, and user-controlled automation.
+
+**Saarthi AI — Speak naturally. See the action. Stay in control.**
